@@ -1,0 +1,6 @@
+Cosas a manejar:
+    Form con cgi (mediante js para habilitar la entrada de texto) para validar el nick.
+    Form para cargar el mensaje del chat.
+    Ajax para obtener la cantidad de conectados.
+    Ajax para obtener la cantidad de mensajes, solo a partir de los que ya tenemos o dimos.
+    
