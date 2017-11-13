@@ -1,0 +1,21 @@
+#!/usr/bin/python
+import cgi
+import csv
+form = cgi.FieldStorage()
+nickU = form.getvalue('nick')
+mensaje = form.getvalue('msje')
+
+id = 1
+
+with open('mensajes.csv', 'r') as archivocsv:
+    reader = csv.DictReader(archivocsv)
+    for row in reader:
+        id = int(row['id'])  + 1
+
+with open('mensajes.csv', 'a') as csvfile:
+    fieldnames = ['id', 'nick', 'mensaje']
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer.writerow({'id': id,
+                     'nick': nickU,
+                     'mensaje': mensaje})
+

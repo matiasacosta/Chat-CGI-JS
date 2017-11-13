@@ -38,7 +38,7 @@
                             <div class="input-group">
                                 <input id="chat-input" type="text" class="form-control input-sm" placeholder="Escribi tu mensaje aqui..." disabled/>
                                 <span class="input-group-btn">
-                                    <button class="btn btn-warning btn-sm" id="chat-boton" disabled>
+                                    <button class="btn btn-warning btn-sm" id="chat-boton" disabled onclick="send('chat-input');">
                                         Enviar</button>
                                 </span>
                             </div>
@@ -80,8 +80,7 @@
                 });
             };
 
-            function ingresar(nickID)
-            {
+            function ingresar(nickID){
                 var nickU = document.getElementById(nickID);
                 document.getElementById("chat-input").removeAttribute("disabled");
                 document.getElementById("chat-boton").removeAttribute("disabled");
@@ -96,6 +95,17 @@
                     actualizar_mensajes_conectados();
                 }, 3000);
             }  
+
+            function send(Msje){
+                var msje = document.getElementById(Msje);
+                var nickU = "Alguien";
+                jQuery.post("/cgi-bin/chat/cgi-send",
+                {
+                nick: nickU,
+                msje: msje.value,
+                });
+                document.getElementById("chat-input").value = "";
+            }
         </script>
     </body>
 </html>
