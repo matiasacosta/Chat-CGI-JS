@@ -15,11 +15,11 @@
                         <div class="panel-heading">
                             <span class="glyphicon glyphicon-user"></span> Nick
                         </div>
-                        <div class="panel-body">
-                            <form method="POST" onsubmit="ingresar('nick')">
+                        <div class="panel-body" id="panel-nick">
+                            <form method="POST" onsubmit="ingresar('nick');return false;">
                                 <div class="form-group">
                                   <label for="pwd">Nick:</label>
-                                  <input type="text" class="form-control" id="nick">
+                                  <input type="text" class="form-control" id="nick" name="nick">
                                 </div>
                                 <button type="submit" class="btn btn-success">Entrar</button>
                               </form>
@@ -31,72 +31,15 @@
                         <div class="panel-heading">
                             <span class="glyphicon glyphicon-comment"></span> Chat
                         </div>
-                        <div class="panel-body" style="overflow-y: scroll;height: 500px;">
-                            <ul class="chat">
-                                <li class="left clearfix"><span class="chat-img pull-left">
-                                    <img src="img/Emiliano De Marco.png" class="img-circle"  height="50px" width="50px"/>
-                                </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
-                                                <span class="glyphicon glyphicon-time"></span>12 mins ago</small>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                            dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="right clearfix"><span class="chat-img pull-right">
-                                    <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
-                                </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>13 mins ago</small>
-                                            <strong class="pull-right primary-font">Bhaumik Patel</strong>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                            dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="left clearfix"><span class="chat-img pull-left">
-                                    <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
-                                </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
-                                                <span class="glyphicon glyphicon-time"></span>14 mins ago</small>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                            dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
-                                <li class="right clearfix"><span class="chat-img pull-right">
-                                    <img src="http://placehold.it/50/FA6F57/fff&text=ME" alt="User Avatar" class="img-circle" />
-                                </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>15 mins ago</small>
-                                            <strong class="pull-right primary-font">Bhaumik Patel</strong>
-                                        </div>
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                            dolor, quis ullamcorper ligula sodales.
-                                        </p>
-                                    </div>
-                                </li>
-                            </ul>
+                        <div class="panel-body" id="caja-chat" style="overflow-y: scroll;height: 500px;">
+
                         </div>
                         <div class="panel-footer">
                             <div class="input-group">
-                                <input id="btn-input" disabled="true" type="text" class="form-control input-sm" placeholder="Escribi tu mensaje aqui..."/>
+                                <input id="chat-input" type="text" class="form-control input-sm" placeholder="Escribi tu mensaje aqui..." disabled/>
                                 <span class="input-group-btn">
-                                    <button class="btn btn-warning btn-sm" disabled="true" id="btn-chat">
-                                        Send</button>
+                                    <button class="btn btn-warning btn-sm" id="chat-boton" disabled>
+                                        Enviar</button>
                                 </span>
                             </div>
                         </div>
@@ -107,21 +50,8 @@
                         <div class="panel-heading">
                             <span class="glyphicon glyphicon-bullhorn"></span> Contactos activos en la sala
                         </div>
-                        <div class="panel-body" style="overflow-y: scroll;">
-                            <ul class="chat">
-                                <li class="left clearfix"><span class="chat-img pull-left">
-                                    <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle" />
-                                </span>
-                                    <div class="chat-body clearfix">
-                                        <div class="header">
-                                            <strong class="primary-font">Jack Sparrow</strong> <small class="pull-right text-muted">
-                                        </div>
-                                        <div class="estado">
-                                            <strong class="primary-font">Mi amor es el mar</strong> <small class="pull-left text-muted">
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                        <div class="panel-body" id="caja-conectados" style="overflow-y: scroll;">
+                            
                         </div>
                     </div>
                 </div>
@@ -129,13 +59,43 @@
         </div>                
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script>
+        <script type="text/javascript">
+
+            var actualizar_mensajes_conectados = function(){
+                $.ajax({
+                    url:'/cgi-bin/chat/cgi-cargar-mensajes',
+                    type: 'POST',
+                    data: {},
+                    success: function(result) {
+                        $("#caja-chat").append(result);
+                    }
+                });
+                $.ajax({
+                    url:'/cgi-bin/chat/cgi-cargar-conectados',
+                    type: 'POST',
+                    data: {},
+                    success: function(result) {
+                        $("#caja-conectados").append(result);
+                    }
+                });
+            };
+
             function ingresar(nickID)
             {
-                var nick = document.getElementById(nickID);
-                alert(nick.value);
-                var nick = document.getElementById(nickID);
-            }   
+                var nickU = document.getElementById(nickID);
+                document.getElementById("chat-input").removeAttribute("disabled");
+                document.getElementById("chat-boton").removeAttribute("disabled");
+                jQuery.post("/cgi-bin/chat/cgi-login",
+                {
+                nick: nickU.value,
+                },
+                function(data,status){
+                    $("#panel-nick").html("<p style='color:green'>" + data + "</p>");
+                });
+                setInterval(function(){
+                    actualizar_mensajes_conectados();
+                }, 3000);
+            }  
         </script>
     </body>
 </html>

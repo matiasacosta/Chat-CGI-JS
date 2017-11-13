@@ -3,22 +3,19 @@ import cgi
 import csv
 form = cgi.FieldStorage()
 nickU = form.getvalue('nick')
+logueo = True
 with open('usuarios.csv', 'r') as archivocsv:
     reader = csv.DictReader(archivocsv)
-    logueo = True
     for row in reader:
         if (row['nick'] == nickU):
             logueo = False
-print("Content-type: text/html\n\n")
-print("<html><head><title>CGI</title></head>")
-print("<body>")
 if logueo == True:
     with open('usuarios.csv', 'a') as csvfile:
         fieldnames = ['nick']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writerow({'nick': nickU})
-    print("OK")
+    mensaje = "Bienvenido {0}".format(nickU)
 else:
-    print("Nombre en Uso")
-print("</body>")
-print("</html>")
+    mensaje = "Este usuario ya se encuentra en la sala de chat"
+print("Content-type: text/plain\n\n")
+print("{0}".format(mensaje))

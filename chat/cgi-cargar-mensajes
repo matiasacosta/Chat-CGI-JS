@@ -1,0 +1,17 @@
+#!/usr/bin/python
+import cgi
+import csv
+print("Content-type: text/html\n\n")
+print("<ul class=\"chat\">")
+print("<li class=\"left clearfix\"><span class=\"chat-img pull-left\">")
+print("<img src=\"img/Cristian Parise.png\" class=\"img-circle\"  height=\"50px\" width=\"50px\"/>")
+print("</span>")
+print("<div class=\"chat-body clearfix\">")
+print("<div class=\"header\">")
+print("<strong class=\"primary-font\">Jack Sparrow</strong> <small class=\"pull-right text-muted\">")
+print("<span class=\"glyphicon glyphicon-time\"></span>12 mins ago</small>")
+print("</div>")
+print("<p>")
+print("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare")
+print("dolor, quis ullamcorper ligula sodales.")
+print("</p></div></li></ul>")
