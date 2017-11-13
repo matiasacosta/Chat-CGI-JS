@@ -85,8 +85,7 @@
                 });
             };
 
-            function ingresar(nickID)
-            {
+            function ingresar(nickID){
                 var nickU = document.getElementById(nickID);
                 document.getElementById("chat-input").removeAttribute("disabled");
                 document.getElementById("chat-boton").removeAttribute("disabled");
@@ -101,6 +100,17 @@
                     actualizar_mensajes_conectados();
                 }, 3000);
             }  
+
+            function send(Msje){
+                var msje = document.getElementById(Msje);
+                var nickU = "Alguien";
+                jQuery.post("/cgi-bin/chat/cgi-send",
+                {
+                nick: nickU,
+                msje: msje.value,
+                });
+                document.getElementById("chat-input").value = "";
+            }
         </script>
     </body>
 </html>
