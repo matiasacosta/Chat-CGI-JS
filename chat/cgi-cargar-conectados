@@ -2,14 +2,16 @@
 import cgi
 import csv
 print("Content-type: text/html\n\n")
-print("<ul class=\"chat\">")
-print("<li class=\"left clearfix\"><span class=\"chat-img pull-left\">")
-print("<img src=\"img/Cristian Parise.png\" class=\"img-circle\"  height=\"50px\" width=\"50px\"/>")
-print("</span>")
-print("<div class=\"chat-body clearfix\">")
-print("<div class=\"header\">")
-print("<strong class=\"primary-font\">Jack Sparrow</strong> <small class=\"pull-right text-muted\">")
-print("</div>")
-print("<div class=\"estado\">")
-print("<strong class=\"primary-font\">Mi amor es el mar</strong> <small class=\"pull-left text-muted\">")
-print("</div></div></li></ul>")
+with open('usuarios.csv', 'r') as archivocsv:
+    reader = csv.DictReader(archivocsv)
+    for row in reader:
+        print("<li class=\"left clearfix\"><span class=\"chat-img pull-left\">")
+        print("<img src=\"http://192.168.2.75/Chat-CGI-JS/img/{}.png\" class=\"img-circle\"  height=\"50px\" width=\"50px\"/>".format(row['nick']))
+        print("</span>")
+        print("<div class=\"chat-body clearfix\">")
+        print("<div class=\"header\">")
+        print("<strong class=\"primary-font\">{}</strong> <small class=\"pull-right text-muted\"></small>".format(row['nick']))
+        print("</div>")
+        print("</div>")
+        print("</li>")
+
