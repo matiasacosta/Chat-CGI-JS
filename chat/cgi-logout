@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/usr/bin/env python
 import csv
 import os
@@ -41,3 +42,42 @@ if 'HTTP_COOKIE' in os.environ:
     print("<HTML><BODY>\n")
     print("<meta http-equiv=\"refresh\" content=\"0; URL='http://localhost/Chat-CGI-JS/index.html'\" />")
     print("</HTML></BODY>\n")
+=======
+#!/usr/bin/python
+import cgi
+import csv
+import Cookie
+import os
+
+
+form = cgi.FieldStorage()
+nickU = form.getvalue('nick')
+logueo = True
+
+
+print "Content-type: text/plain\n"
+
+try:
+    cookie = Cookie.SimpleCookie(os.environ["HTTP_COOKIE"])
+    coookie[name]["expires"] = Sat, 7-Feb-2010 03:10:00	
+    with open('usuarios.csv', 'r') as csvfile:
+	reader = csv.DictReader(csvfile)
+	with open ('temp.csv','w') as csvtemp:
+		campos = ['nick','numero_mensaje']		
+		writer = csv.DictWriter(csvtemp, fieldnames=campos)
+		for row in reader:
+			row = linea.split("\n")[0].split(",")
+			writer.writerow(row[0],row[1])
+		
+    with open('temp.csv','r') as tempcsv:
+	reader = csv.DictReader(tempcsv)
+	with open ('usuarios.csv','w') as csvusuarios:
+		campos = ['nick','numero_mensaje']		
+		writer = csv.DictWriter(csvusuarios, fieldnames=campos)
+		for row in reader:
+			row = linea.split("\n")[0].split(",")
+			writer.writerow(row[0],row[1])
+    print "Se cerro la sesion correctamente"
+except (Cookie.CookieError, KeyError):
+    print "No se pudo cerrar la sesion!"
+>>>>>>> 7653b8f6d9c0049e43d90a7c6bee3ac2634ef74a

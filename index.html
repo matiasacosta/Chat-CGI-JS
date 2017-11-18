@@ -22,6 +22,7 @@
                                   <input type="text" class="form-control" id="nick" name="nick">
                                 </div>
                                 <button type="submit" class="btn btn-success">Entrar</button>
+                                <button type="submit" onclick = "salir()" class="btn btn-success" id = "salir" >Salir</button>
                               </form>
                         </div>
                     </div>
@@ -90,6 +91,7 @@
                 var nickU = document.getElementById(nickID);
                 document.getElementById("chat-input").removeAttribute("disabled");
                 document.getElementById("chat-boton").removeAttribute("disabled");
+                document.getElementById("salir").removeAttribute("disabled");
                 jQuery.post("/cgi-bin/chat/cgi-login",
                 {
                 nick: nickU.value,
@@ -103,6 +105,7 @@
             }  
 
             function salir(){
+<<<<<<< HEAD
                 jQuery.post("/cgi-bin/chat/cgi-logout",
                 {},
                 function(data){
@@ -111,6 +114,17 @@
                     document.getElementById("chat-input").prop("disabled",true);
                     document.getElementById("chat-boton").prop("disabled",true);
                     clearInterval(intervalo);
+=======
+                
+                var nickU = document.getElementById("panel-nick");
+                alert("Sali de la sesion" + nickU);
+                jQuery.post("/cgi-bin/chat/cgi-logout",
+                {
+                nick: nickU.value,
+                },
+                function(data){
+                    $("#panel-nick").html("<p style='color:green'>" + data + "</p>");
+>>>>>>> 7653b8f6d9c0049e43d90a7c6bee3ac2634ef74a
                 });
             }
 
