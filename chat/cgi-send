@@ -3,6 +3,7 @@ import cgi
 import csv
 form = cgi.FieldStorage()
 nickU = form.getvalue('nick')
+nickU = nickU.replace("\n", "").replace('"','')
 mensaje = form.getvalue('msje')
 
 id = 1
@@ -18,4 +19,6 @@ with open('mensajes.csv', 'a') as csvfile:
     writer.writerow({'id': id,
                      'nick': nickU,
                      'mensaje': mensaje})
+
+print("Content-type: text/html\n\n")                     
 

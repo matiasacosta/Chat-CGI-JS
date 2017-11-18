@@ -4,27 +4,37 @@ import csv
 import Cookie
 import os
 
+
+ultimo_mensaje_leido = 0
+lineas = []
+with open('mensajes.csv', 'r') as csvfile1:
+    nuevo_ultimo_mensaje = sum(1 for row in csvfile1) - 1
+with open('usuarios.csv', 'r') as archivocsv:
+    reader = csv.DictReader(archivocsv)
+    for row in reader:
+        lineas.append(row)
+    
 if 'HTTP_COOKIE' in os.environ:
     cookie_string = os.environ.get('HTTP_COOKIE')
     c=Cookie.SimpleCookie()
     c.load(cookie_string)
-    with open('usuarios.csv', 'r') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            try:
-                if c[row['nick']]: 
-                    ultimo_mensaje_enviado = int(c[row['nick']].value)
-                    with open('mensajes.csv', 'r') as csvfile1:
-                        nuevo_ultimo_mensaje = sum(1 for row in csvfile1)
-                    c[row['nick']] = nuevo_ultimo_mensaje                   
-            except KeyError:
-                pass
+    for linea in lineas:
+        if linea['idsesion'] == c['idsesion'].value:
+            ultimo_mensaje_leido = linea['numero_mensaje']
+            linea['numero_mensaje'] = nuevo_ultimo_mensaje
+
+    with open('usuarios.csv', 'w') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(["nick","numero_mensaje","idsesion"])
+        for linea in lineas:
+            writer.writerow([linea['nick'],linea['numero_mensaje'], linea['idsesion']])
+    
     print(c)
-print("Content-type: text/html\n\n")
-with open('mensajes.csv', 'r') as csvfile:
+    print("Content-type: text/html\n\n")
+    with open('mensajes.csv', 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            if row['id'] > ultimo_mensaje_enviado:
+            if row['id'] > ultimo_mensaje_leido:
                 print("<li class=\"left clearfix\"><span class=\"chat-img pull-left\">")
                 print("<img src=\"http://192.168.2.75/Chat-CGI-JS/img/{}.png\" class=\"img-circle\"  height=\"50px\" width=\"50px\"/>".format(row['nick']))
                 print("</span>")

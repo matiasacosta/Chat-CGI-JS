@@ -40,7 +40,7 @@
                             <div class="input-group">
                                 <input id="chat-input" type="text" class="form-control input-sm" placeholder="Escribi tu mensaje aqui..." disabled/>
                                 <span class="input-group-btn">
-                                    <button class="btn btn-warning btn-sm" id="chat-boton"  disabled>
+                                    <button class="btn btn-warning btn-sm" id="chat-boton" onclick="send('chat-input');" disabled>
                                         Enviar</button>
                                 </span>
                             </div>
@@ -61,9 +61,11 @@
                 </div>
             </div>
         </div>                
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script type="text/javascript">
+
+            var intervalo;
 
             var actualizar_mensajes_conectados = function(){
                 $.ajax({
@@ -80,7 +82,6 @@
                     data: {},
                     success: function(result) {
                         $("#caja-conectados").html(result);
-                        console.log(result);
                     }
                 });
             };
@@ -94,16 +95,29 @@
                 nick: nickU.value,
                 },
                 function(data,status){
-                    $("#panel-nick").html("<p style='color:green'>" + data + "</p>");
+                    $("#panel-nick").html("<p style='color:green' id='usuario'>" + data + "</p><button class=\"btn btn-success btn-sm\" id=\"chat-boton\" onclick=\"salir();\">salir</button>");
                 });
-                setInterval(function(){
+                intervalo = setInterval(function(){
                     actualizar_mensajes_conectados();
-                }, 3000);
+                }, 1000);
             }  
+
+            function salir(){
+                jQuery.post("/cgi-bin/chat/cgi-logout",
+                {},
+                function(data){
+                    $("#panel-nick").html(data);
+                    document.getElementById("lista-chat").empty();
+                    document.getElementById("chat-input").prop("disabled",true);
+                    document.getElementById("chat-boton").prop("disabled",true);
+                    clearInterval(intervalo);
+                });
+            }
 
             function send(Msje){
                 var msje = document.getElementById(Msje);
-                var nickU = "Alguien";
+                var nickU = $("#usuario").text();
+                console.log(nickU);
                 jQuery.post("/cgi-bin/chat/cgi-send",
                 {
                 nick: nickU,

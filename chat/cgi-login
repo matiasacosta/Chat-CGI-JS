@@ -2,9 +2,11 @@
 import cgi
 import csv
 import Cookie
+import random
 
 form = cgi.FieldStorage()
 nickU = form.getvalue('nick')
+
 logueo = True
 with open('usuarios.csv', 'r') as archivocsv:
     reader = csv.DictReader(archivocsv)
@@ -12,16 +14,20 @@ with open('usuarios.csv', 'r') as archivocsv:
         if (row['nick'] == nickU):
             logueo = False
 if logueo == True:
+    idsesion = random.randint(0,10000000000)
     with open('usuarios.csv', 'a') as csvfile:
-        fieldnames = ['nick']
+        fieldnames = ['nick','numero_mensaje','idsesion']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writerow({'nick': nickU,
-                        'numero_mensaje':'0'})
-    mensaje = "Bienvenido {0}".format(nickU)
+                        'numero_mensaje': '0',
+                        'idsesion': idsesion})
+    mensaje = "{0}".format(nickU)
     c = Cookie.SimpleCookie()
-    c[nickU.replace(" ","")] = '0'
+    c['idsesion'] = idsesion
+    print(c)    
+    print("Content-type: text/plain\n\n")
+    print("{0}".format(mensaje))
 else:
     mensaje = "Este usuario ya se encuentra en la sala de chat"
-print(c)    
-print("Content-type: text/plain\n\n")
-print("{0}".format(mensaje))
+    print("Content-type: text/plain\n\n")
+    print("{0}".format(mensaje))
