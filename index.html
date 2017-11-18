@@ -105,7 +105,6 @@
             }  
 
             function salir(){
-<<<<<<< HEAD
                 jQuery.post("/cgi-bin/chat/cgi-logout",
                 {},
                 function(data){
@@ -114,17 +113,6 @@
                     document.getElementById("chat-input").prop("disabled",true);
                     document.getElementById("chat-boton").prop("disabled",true);
                     clearInterval(intervalo);
-=======
-                
-                var nickU = document.getElementById("panel-nick");
-                alert("Sali de la sesion" + nickU);
-                jQuery.post("/cgi-bin/chat/cgi-logout",
-                {
-                nick: nickU.value,
-                },
-                function(data){
-                    $("#panel-nick").html("<p style='color:green'>" + data + "</p>");
->>>>>>> 7653b8f6d9c0049e43d90a7c6bee3ac2634ef74a
                 });
             }
 
